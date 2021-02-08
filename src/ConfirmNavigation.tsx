@@ -2,7 +2,11 @@ import React, { FC, useState } from "react";
 import { Button, Modal } from "react-bootstrap";
 import { Prompt, useHistory } from "react-router-dom";
 
-const ConfirmNavigation: FC = ({ children }) => {
+interface ComponentProps {
+  confirm?: boolean;
+}
+
+const ConfirmNavigation: FC<ComponentProps> = ({ confirm = true }) => {
   const [show, setShow] = useState(false);
   const history = useHistory();
   const [nextLocation, setNextLocation] = useState<string | null>(null);
@@ -28,7 +32,10 @@ const ConfirmNavigation: FC = ({ children }) => {
 
   return (
     <>
-      <Prompt when={!nextLocation} message={handleBlockedNavigation} />
+      <Prompt
+        when={confirm && !nextLocation}
+        message={handleBlockedNavigation}
+      />
       <Modal show={show} onHide={handleCancel}>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Navigate</Modal.Title>
@@ -43,7 +50,6 @@ const ConfirmNavigation: FC = ({ children }) => {
           </Button>
         </Modal.Footer>
       </Modal>
-      {children}
     </>
   );
 };

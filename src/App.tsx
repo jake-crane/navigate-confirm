@@ -24,19 +24,13 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
-            <ConfirmNavigation>
-              <About />
-            </ConfirmNavigation>
+            <About />
           </Route>
           <Route path="/users">
-            <ConfirmNavigation>
-              <Users />
-            </ConfirmNavigation>
+            <Users />
           </Route>
           <Route path="/">
-            <ConfirmNavigation>
-              <Home />
-            </ConfirmNavigation>
+            <Home />
           </Route>
         </Switch>
       </div>
@@ -45,13 +39,28 @@ export default function App() {
 }
 
 function Home() {
-  return <h2>Home</h2>;
+  return (
+    <>
+      <ConfirmNavigation />
+      <h2>Home</h2>
+    </>
+  );
 }
 
 function About() {
-  return <h2>About</h2>;
+  return (
+    <>
+      <ConfirmNavigation confirm={true} />
+      <h2>About</h2>
+    </>
+  );
 }
 
 function Users() {
-  return <h2>Users</h2>;
+  return (
+    <>
+      <ConfirmNavigation confirm={false} />
+      <h2>Users</h2>
+    </>
+  );
 }
