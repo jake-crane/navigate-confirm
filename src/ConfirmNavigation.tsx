@@ -1,23 +1,24 @@
 import React, { FC, useState } from "react";
-import { Button, Modal } from "react-bootstrap";
 import { Prompt, useHistory } from "react-router-dom";
 
+export interface ChildData {
+  onCancel: () => void;
+  onConfirm: () => void;
+}
 interface ComponentProps {
-  confirm?: boolean;
+  when?: boolean;
+  children: (data: ChildData) => React.ReactNode;
 }
 
-const ConfirmNavigation: FC<ComponentProps> = ({ confirm = true }) => {
-  const [show, setShow] = useState(false);
+const ConfirmNavigation: FC<ComponentProps> = ({ when = true, children }) => {
   const history = useHistory();
   const [nextLocation, setNextLocation] = useState<string | null>(null);
 
-  const handleCancel = () => {
-    setShow(false);
+  const onCancel = () => {
     setNextLocation(null);
   };
 
-  const handleConfirm = () => {
-    setShow(false);
+  const onConfirm = () => {
     if (nextLocation) {
       history.push(nextLocation);
       setNextLocation(null);
@@ -26,30 +27,13 @@ const ConfirmNavigation: FC<ComponentProps> = ({ confirm = true }) => {
 
   const handleBlockedNavigation = (location: any) => {
     setNextLocation(location);
-    setShow(true);
     return false;
   };
 
   return (
     <>
-      <Prompt
-        when={confirm && !nextLocation}
-        message={handleBlockedNavigation}
-      />
-      <Modal show={show} onHide={handleCancel}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Navigate</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to navigate?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleConfirm}>
-            Confirm
-          </Button>
-        </Modal.Footer>
-      </Modal>
+      <Prompt when={when && !nextLocation} message={handleBlockedNavigation} />
+      {nextLocation && children({ onCancel, onConfirm })}
     </>
   );
 };

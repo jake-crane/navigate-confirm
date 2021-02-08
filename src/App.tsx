@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import ConfirmNavigation from "./ConfirmNavigation";
+import NavigationConfirmModal from "./NavigationConfirmModal";
 
 export default function App() {
   return (
@@ -41,7 +42,11 @@ export default function App() {
 function Home() {
   return (
     <>
-      <ConfirmNavigation />
+      <ConfirmNavigation when={false}>
+        {({ onConfirm, onCancel }) => (
+          <NavigationConfirmModal onConfirm={onConfirm} onCancel={onCancel} />
+        )}
+      </ConfirmNavigation>
       <h2>Home</h2>
     </>
   );
@@ -50,7 +55,11 @@ function Home() {
 function About() {
   return (
     <>
-      <ConfirmNavigation confirm={true} />
+      <ConfirmNavigation>
+        {({ onConfirm, onCancel }) => (
+          <NavigationConfirmModal onConfirm={onConfirm} onCancel={onCancel} />
+        )}
+      </ConfirmNavigation>
       <h2>About</h2>
     </>
   );
@@ -59,7 +68,11 @@ function About() {
 function Users() {
   return (
     <>
-      <ConfirmNavigation confirm={false} />
+      <ConfirmNavigation when={true}>
+        {({ onConfirm, onCancel }) => (
+          <NavigationConfirmModal onConfirm={onConfirm} onCancel={onCancel} />
+        )}
+      </ConfirmNavigation>
       <h2>Users</h2>
     </>
   );
