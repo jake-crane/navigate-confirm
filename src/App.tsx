@@ -1,13 +1,6 @@
-import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link,
-  Prompt,
-  useHistory,
-} from "react-router-dom";
+import React from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import ConfirmNavigation from "./ConfirmNavigation";
 
 export default function App() {
   return (
@@ -31,13 +24,19 @@ export default function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route path="/about">
-            <About />
+            <ConfirmNavigation>
+              <About />
+            </ConfirmNavigation>
           </Route>
           <Route path="/users">
-            <Users />
+            <ConfirmNavigation>
+              <Users />
+            </ConfirmNavigation>
           </Route>
           <Route path="/">
-            <Home />
+            <ConfirmNavigation>
+              <Home />
+            </ConfirmNavigation>
           </Route>
         </Switch>
       </div>
@@ -50,48 +49,7 @@ function Home() {
 }
 
 function About() {
-  const [show, setShow] = useState(false);
-  const history = useHistory();
-  const [nextLocation, setNextLocation] = useState<string | null>(null);
-
-  const handleCancel = () => {
-    setShow(false);
-    setNextLocation(null);
-  };
-
-  const handleConfirm = () => {
-    setShow(false);
-    if (nextLocation) {
-      history.push(nextLocation);
-    }
-  };
-
-  const handleBlockedNavigation = (location: any) => {
-    setNextLocation(location);
-    setShow(true);
-    return false;
-  };
-
-  return (
-    <>
-      <h2>About</h2>
-      <Prompt when={!nextLocation} message={handleBlockedNavigation} />
-      <Modal show={show} onHide={handleCancel}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Navigate</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to navigate?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCancel}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleConfirm}>
-            Confirm
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
-  );
+  return <h2>About</h2>;
 }
 
 function Users() {
